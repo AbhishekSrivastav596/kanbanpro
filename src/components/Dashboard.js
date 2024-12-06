@@ -33,7 +33,7 @@ function Dashboard(props) {
   const { window } = props;
   const router = useDemoRouter('/');
 
-  // Load columns data from localStorage
+  
   const loadColumnsFromLocalStorage = () => {
     const savedData = localStorage.getItem('kanban-columns');
     return savedData ? JSON.parse(savedData) : {
@@ -45,7 +45,7 @@ function Dashboard(props) {
 
   const [columns, setColumns] = useState(loadColumnsFromLocalStorage);
 
-  // Task content for each column
+ 
   const [taskContent, setTaskContent] = useState({
     todo: '',
     inprogress: '',
@@ -54,7 +54,6 @@ function Dashboard(props) {
 
   const [isInputVisible, setIsInputVisible] = useState({});
 
-  // Save columns data to localStorage whenever columns are updated
   useEffect(() => {
     localStorage.setItem('kanban-columns', JSON.stringify(columns));
   }, [columns]);
@@ -64,7 +63,7 @@ function Dashboard(props) {
       setColumns((prevColumns) => {
         const updatedColumns = { ...prevColumns };
         updatedColumns[columnKey].tasks.push({
-          id: `task-${Date.now()}`, // Unique task ID
+          id: `task-${Date.now()}`, 
           content: taskContent[columnKey],
         });
 
@@ -73,7 +72,7 @@ function Dashboard(props) {
       setTaskContent((prevContent) => ({ ...prevContent, [columnKey]: '' }));
       setIsInputVisible((prev) => ({ ...prev, [columnKey]: false }));
 
-      // Show success toast when a task is added
+     
       toast.success('Task added successfully!');
     }
   };
@@ -86,18 +85,17 @@ function Dashboard(props) {
   };
 
   const moveTask = (sourceColumnKey, destColumnKey, taskId, index) => {
-    if (sourceColumnKey === destColumnKey) return; // Don't move if columns are the same
+    if (sourceColumnKey === destColumnKey) return;
 
     const sourceColumn = columns[sourceColumnKey];
     const destColumn = columns[destColumnKey];
     const sourceTasks = Array.from(sourceColumn.tasks);
     const destTasks = Array.from(destColumn.tasks);
 
-    // Find and remove the task from source
     const taskToMove = sourceTasks.find((task) => task.id === taskId);
     if (taskToMove) {
       sourceTasks.splice(sourceTasks.indexOf(taskToMove), 1);
-      destTasks.splice(index, 0, taskToMove); // Add task to the new column at the specified index
+      destTasks.splice(index, 0, taskToMove); 
 
       setColumns((prevColumns) => ({
         ...prevColumns,
@@ -105,8 +103,6 @@ function Dashboard(props) {
         [destColumnKey]: { ...destColumn, tasks: destTasks },
       }));
 
-      // Show success toast when a task is moved
-      // toast.info('Task moved successfully!');
     }
   };
 
@@ -144,7 +140,7 @@ function Dashboard(props) {
           </div>
         </DashboardLayout>
       </DndProvider>
-      <ToastContainer   /> {/* Toast Container for the notifications */}
+      <ToastContainer/> 
     </AppProvider>
   );
 }
